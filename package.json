@@ -1,6 +1,6 @@
 {
   "name": "sokoban-generator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A generator for Sokoban levels",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,10 @@
   "keywords": [
     "sokoban"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnoXDD/flux-delay-dispatcher.git"
+  },
   "homepage": "https://github.com/AnoXDD/sokoban-generator-javascript",
   "author": "Runjie Guan <guanrunjie@gmail.com>",
   "license": "GNU GPLv3",
