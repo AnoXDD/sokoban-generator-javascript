@@ -7,14 +7,12 @@ test("Same seed yields same map", () => {
   let options = {
     seed           : 42,
     initialPosition: {x: 3, y: 3},
-
   };
 
   let g1 = generateSokobanLevel(options);
   let g2 = generateSokobanLevel(options);
 
-  console.log(g1);
-
+  expect(g1).not.toBe(null);
   expect(g1).toBe(g2);
 });
 

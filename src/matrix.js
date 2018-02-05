@@ -14,10 +14,6 @@ import {moveToDirection} from "./direction";
 import {emptyMatrix} from "./util";
 
 export default class Matrix {
-  _data = [];
-  _width = 0;
-  _height = 0;
-
   constructor(width, height, initValue) {
     this._width = width;
     this._height = height;

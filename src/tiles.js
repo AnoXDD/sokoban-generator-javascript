@@ -26,7 +26,6 @@ export function isTransparentTile(tile) {
 
 export function isMovableTile(tile) {
   return !(tile === FLOOR || tile === WALL || tile === GOAL);
-
 }
 
 export function isWalkableTile(tile) {

@@ -6,15 +6,6 @@ import {emptyMatrix} from "./util";
 import {TEMPLATE_SIZE, Templates} from "./template";
 
 export default class Grid {
-  _width = 0;
-  _height = 0;
-  _box = 0;
-  _data = new Matrix(0, 0);
-  _rand = null;
-  _seed = null;
-  _minWall = null;
-  _playerFixedPos = null;
-
   constructor(width = 0,
               height = 0,
               box = 3,
@@ -79,19 +70,17 @@ export default class Grid {
 
     for (let x = 0; x < this._width; x += TEMPLATE_SIZE) {
       for (let y = 0; y < this._height; y += TEMPLATE_SIZE) {
-        let t = this._applyTemplate(x, y);
-
-        if (t === -1) {
-          return false;
-        }
-
-        if (wallCount += t < this._minWall) {
-          return false;
-        }
+        wallCount += this._applyTemplate(x, y);
       }
     }
 
-    return true;
+    if (this._playerFixedPos) {
+      if (this._data.isWall(this._playerFixedPos.x, this._playerFixedPos.y)) {
+        return false;
+      }
+    }
+
+    return wallCount >= this._minWall;
   }
 
   /**
@@ -112,12 +101,6 @@ export default class Grid {
       for (let dy = 0; dy < TEMPLATE_SIZE; ++dy, ++i) {
         if (temp[i] === WALL) {
           ++t;
-
-          if (this._playerFixedPos &&
-            x + dx === this._playerFixedPos.x &&
-            y + dy === this._playerFixedPos.y) {
-            return -1;
-          }
         }
 
         this.set(x + dx, y + dy, temp[i]);

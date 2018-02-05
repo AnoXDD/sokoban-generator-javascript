@@ -1,6 +1,14 @@
 # Sokoban Level Generator (JavaScript)
 
+[![npm](https://img.shields.io/npm/v/sokoban-generator.svg?maxAge=86400)](https://www.npmjs.com/package/sokoban-generator)
+
 A procedural level generator for [Sokoban](https://en.wikipedia.org/wiki/Sokoban), written in JavaScript.
+
+## Install
+
+```
+npm i sokoban-generator
+```
 
 ## Usage
 
@@ -30,6 +38,16 @@ let level = generateSokobanLevel(options);
 // Or to use the default options
 let level = generateSokobanLevel();
 ```
+
+**Note:** seed is only expected to generate the same map under the same options. This means, for example, given 
+```JavaScript
+generateSokobanLevel({seed: 1, boxes: 2}) 
+```
+and
+```JavaScript
+generateSokobanLevel({seed: 1, boxes: 3}) 
+```
+will probably result in completely different levels.
 
 ## Performance
 
