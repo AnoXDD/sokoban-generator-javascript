@@ -12,11 +12,19 @@ npm i sokoban-generator
 
 ## Usage
 
-```JavaScript
+```JavaScript 1.6
+// es6
 import {generateSokobanLevel} from sokoban-generator;
+generateSokobanLevel();
+
+// es5 or older
+var sokobanGenerator = require("sokoban-generator");
+sokobanGenerator.generateSokobanLevel();
 ```
 
-The generator can either returns a [string representation of the level](http://sokobano.de/wiki/index.php?title=Level_format), or a `grid` class. 
+The generator accepts an optional `options`, and can return either a [string representation of the level](http://sokobano.de/wiki/index.php?title=Level_format), or a [`grid`](https://github.com/AnoXDD/sokoban-generator-javascript/blob/master/src/grid.js) class. 
+
+If will return `null` if no solution is found. Increasing `attempts` might help.
 
 ```JavaScript
 const options = {
@@ -24,8 +32,8 @@ const options = {
   height: 9, // the height of the sokoban grid
   boxes: 3, // the boxes on the grid
   minWalls: 13, // the minimum number of walls on the grid
-  attempts: 50, // when generating the map, the maximum attempts
-  seed: Date.now(), // map seed. Same seed generates same map
+  attempts: 5000, // when generating the map, the maximum attempts
+  seed: Date.now(), // map seed. See note below
   initialPosition: { // The initial position of player
     x: 0,
     y: 0
@@ -34,30 +42,25 @@ const options = {
 };
 
 let level = generateSokobanLevel(options);
-
-// Or to use the default options
-let level = generateSokobanLevel();
 ```
 
-**Note:** seed is only expected to generate the same map under the same options. This means, for example, given 
-```JavaScript
-generateSokobanLevel({seed: 1, boxes: 2}) 
-```
+### Note
+
+* Seed is only expected to generate the same map under the same options. This means, for example,  
+`generateSokobanLevel({seed: 1, boxes: 2})`
 and
-```JavaScript
-generateSokobanLevel({seed: 1, boxes: 3}) 
-```
-will probably result in completely different levels.
+`generateSokobanLevel({seed: 1, boxes: 3})`
+will probably generate different levels.
 
 ## Performance
 
 The time it takes to generate a level is greatly increased when the number of size and walls are increased. 
 
-It took ~5 seconds to generate a result on default settings on a 2015 Ultrabook Laptop using node.
+It took ~5 seconds to generate a result on default settings on a 2015 Ultrabook Laptop using node, but it took only less than a second on [runkit](https://npm.runkit.com/sokoban-generator).
 
 ## License
 
 GNU GPLv3
 
 ## Reference
-The whole algorithm is partialy based on [this paper](http://larc.unt.edu/ian/pubs/GAMEON-NA_METH_03.pdf)
+The whole algorithm is partially based on [this paper](http://larc.unt.edu/ian/pubs/GAMEON-NA_METH_03.pdf)

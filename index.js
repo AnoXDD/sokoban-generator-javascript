@@ -1,12 +1,12 @@
 import Grid from "./src/grid";
 
-export function generateSokobanLevel(parameters) {
+export function generateSokobanLevel(parameters = {}) {
   let {
     width = 9,
     height = 9,
     boxes = 3,
     minWalls = 13,
-    attempts = 50,
+    attempts = 5000,
     seed = Date.now(),
     initialPosition,
     type = "string",
