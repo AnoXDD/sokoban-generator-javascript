@@ -9,6 +9,7 @@
   "keywords": [
     "sokoban"
   ],
+  "homepage": "https://github.com/AnoXDD/sokoban-generator-javascript",
   "author": "Runjie Guan <guanrunjie@gmail.com>",
   "license": "GNU GPLv3",
   "devDependencies": {
