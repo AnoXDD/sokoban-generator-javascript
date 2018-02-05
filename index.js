@@ -15,11 +15,12 @@ export function generateSokobanLevel(parameters = {}) {
   let grid = new Grid(width, height, boxes, seed, minWalls, initialPosition);
 
   while (--attempts > 0) {
-    if (!grid.applyTemplates() || !grid.isGoodCandidate() || !grid.redeployGoals()) {
+    if (!grid.applyTemplates()
+      || !grid.isGoodCandidate()
+      || !grid.redeployGoals()
+      || !grid.generateFarthestBoxes()) {
       continue;
     }
-
-    grid.generateFarthestBoxes();
 
     if (type === "string") {
       return grid.toReadableString();

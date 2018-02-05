@@ -97,8 +97,8 @@ export default class Grid {
     let i = 0;
     let t = 0;
 
-    for (let dx = 0; dx < TEMPLATE_SIZE; ++dx) {
-      for (let dy = 0; dy < TEMPLATE_SIZE; ++dy, ++i) {
+    for (let dx = 0; dx < TEMPLATE_SIZE && x + dx < this._width; ++dx) {
+      for (let dy = 0; dy < TEMPLATE_SIZE && y + dy < this._height; ++dy, ++i) {
         if (temp[i] === WALL) {
           ++t;
         }
@@ -228,6 +228,10 @@ export default class Grid {
       }
     }
 
+    if (maxPos === null) {
+      return false;
+    }
+
     this.applyStringGrid(maxMap);
 
     // Set player position
@@ -236,6 +240,8 @@ export default class Grid {
     } else {
       this.set(maxPos.x, maxPos.y, PLAYER);
     }
+
+    return true;
   }
 
 //region private functions

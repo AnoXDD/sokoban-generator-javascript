@@ -17,7 +17,7 @@ export default class Matrix {
   constructor(width, height, initValue) {
     this._width = width;
     this._height = height;
-    this._data = this._emptyMatrix(height, width, initValue);
+    this._data = this._emptyMatrix(width, height, initValue);
   }
 
   get(x, y) {
@@ -354,8 +354,8 @@ export default class Matrix {
     this._propagateFloorWith(x, y + 1, tile);
   }
 
-  _emptyMatrix(width, height, initValue) {
-    return emptyMatrix(this._width, this._height, initValue);
+  _emptyMatrix(width = this._width, height = this._height, initValue) {
+    return emptyMatrix(width, height, initValue);
   }
 
   toString() {

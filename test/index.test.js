@@ -3,38 +3,73 @@ import {PLAYER, PLAYER_GOAL} from "../src/tiles";
 import {generateSokobanLevel} from "../index";
 import seedrandom from "seedrandom";
 
-test("Same seed yields same map", () => {
-  let options = {
-    seed           : 42,
-    initialPosition: {x: 3, y: 3},
-  };
+describe("Options", () => {
+  test("Same seed yields same map", () => {
+    let options = {
+      seed           : 42,
+      initialPosition: {x: 3, y: 3},
+    };
 
-  let g1 = generateSokobanLevel(options);
-  let g2 = generateSokobanLevel(options);
+    let g1 = generateSokobanLevel(options);
+    let g2 = generateSokobanLevel(options);
 
-  expect(g1).not.toBe(null);
-  expect(g1).toBe(g2);
+    expect(g1).not.toBe(null);
+    expect(g1).toBe(g2);
+  });
+
+  test("Fixes player position", () => {
+    let x = 3;
+    let y = 3;
+    let options = {
+      seed           : 42,
+      initialPosition: {x, y},
+      type           : "class",
+    };
+
+    let g1 = generateSokobanLevel(options);
+
+    expect(g1.get(x, y)).toMatch(new RegExp(PLAYER + PLAYER_GOAL));
+  });
+
+  test("Sets minWall", () => {
+    let options = {
+      minWalls: 99,
+      attempts: 1000,
+    };
+
+    expect(generateSokobanLevel(options)).toBeNull();
+  });
 });
 
-test("Fixes player position", () => {
-  let x = 3;
-  let y = 3;
-  let options = {
-    seed           : 42,
-    initialPosition: {x, y},
-    type           : "class",
-  };
+describe("Sanity check", () => {
+  test("1x1", () => {
+    expect(generateSokobanLevel({width: 1, height: 1, boxes: 1, minWalls: 0}))
+      .toBeNull();
+  });
 
-  let g1 = generateSokobanLevel(options);
+  test("1x2", () => {
+    expect(generateSokobanLevel({width: 2, height: 1, boxes: 1, minWalls: 0}))
+      .toBeNull();
+  });
 
-  expect(g1.get(x, y)).toMatch(new RegExp(PLAYER + PLAYER_GOAL));
-});
+  test("1x2 too many boxes", () => {
+    expect(generateSokobanLevel({width: 2, height: 1, boxes: 5, minWalls: 0}))
+      .toBeNull();
+  });
 
-test("Sets minWall", () => {
-  let options = {
-    minWalls: 99,
-    attempts: 1000,
-  };
+  test("1x3", () => {
+    expect(generateSokobanLevel({width: 3, height: 2, boxes: 1, minWalls: 0}))
+      .not
+      .toBeNull();
+  });
 
-  expect(generateSokobanLevel(options)).toBeNull();
+  test("2x2", () => {
+    expect(generateSokobanLevel({width: 2, height: 2, boxes: 1, minWalls: 0}))
+      .toBeNull();
+  });
+
+  test("2x2 too many boxes", () => {
+    expect(generateSokobanLevel({width: 2, height: 2, boxes: 5, minWalls: 0}))
+      .toBeNull();
+  });
 });
