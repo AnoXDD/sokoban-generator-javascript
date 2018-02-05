@@ -1,15 +1,37 @@
-import Grid from "./grid";
+import Grid from "./src/grid";
 
-export function generateSokoban(width = 9,
-                                height = 9,
-                                boxes = 3,
-                                maxAttempts = 100) {
-  let grid = new Grid(width, height);
-  while (--maxAttempts > 0) {
-    grid.applyTemplate();
-    if (!grid.isGoodCandidate() || !grid.redeployGoals()) {
+export function generateSokobanLevel(parameters) {
+  let {
+    width = 9,
+    height = 9,
+    boxes = 3,
+    minWalls = 13,
+    attempts = 50,
+    seed = Date.now(),
+    initialPosition,
+    type = "string",
+  } = parameters;
+
+  let grid = new Grid(width, height, boxes, seed, minWalls, initialPosition);
+
+  while (--attempts > 0) {
+    if (!grid.applyTemplates() || !grid.isGoodCandidate() || !grid.redeployGoals()) {
       continue;
     }
 
+    grid.generateFarthestBoxes();
+
+    if (type === "string") {
+      return grid.toReadableString();
+    }
+
+    if (type === "class") {
+      return grid;
+    }
+
+    console.warn(`sokoban-generator/generateSokobanLevel: Unrecognized value for key "string": ${type}. It should be either "string" or "class`);
+    return grid.toReadableString();
   }
+
+  return null;
 }

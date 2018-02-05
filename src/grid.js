@@ -1,10 +1,10 @@
-import {FLOOR, GOAL, PLAYER} from "./tiles";
+import {FLOOR, GOAL, PLAYER, WALL} from "./tiles";
 import seedrandom from "seedrandom";
 import {DIRECTIONS, moveToDirection, oppositeDirection} from "./direction";
 import Matrix from "./matrix";
 import {emptyMatrix} from "./util";
+import {TEMPLATE_SIZE, Templates} from "./template";
 
-// todo make `map` of generateFarthestBoxes static (or global)
 export default class Grid {
   _width = 0;
   _height = 0;
@@ -12,23 +12,23 @@ export default class Grid {
   _data = new Matrix(0, 0);
   _rand = null;
   _seed = null;
-  _isPlayerFixed = false;
-  _playerFixedX = null;
-  _playerFixedY = null;
+  _minWall = null;
+  _playerFixedPos = null;
 
-  constructor(width = 0, height = 0, box = 3, seed = 0, playerPos) {
+  constructor(width = 0,
+              height = 0,
+              box = 3,
+              seed = 0,
+              minWall = 0,
+              playerPos) {
     this._width = width;
     this._height = height;
     this._box = box;
-    this._data = new Matrix(this._width, this._height);
+    this._data = new Matrix(this._width, this._height, FLOOR);
     this._rand = seedrandom(seed);
     this._seed = seed;
-
-    if (playerPos) {
-      this._isPlayerFixed = true;
-      this._playerFixedX = playerPos.x;
-      this._playerFixedY = playerPos.y;
-    }
+    this._minWall = minWall;
+    this._playerFixedPos = playerPos;
   }
 
   get(x, y) {
@@ -59,17 +59,72 @@ export default class Grid {
   }
 
   clone() {
-    let newGrid = new Grid(this._width, this._height, this._box, this._seed);
+    let newGrid = new Grid(this._width,
+      this._height,
+      this._box,
+      this._seed,
+      this._minWall,
+      this._playerFixedPos);
     newGrid._data = this._data.clone();
 
     return newGrid;
   }
 
   /**
-   * Resets the grid and apply template
+   * Resets the grid and apply template.
+   * @return boolean - true if one is generated successfully
    */
-  applyTemplate() {
-// todo
+  applyTemplates() {
+    let wallCount = 0;
+
+    for (let x = 0; x < this._width; x += TEMPLATE_SIZE) {
+      for (let y = 0; y < this._height; y += TEMPLATE_SIZE) {
+        let t = this._applyTemplate(x, y);
+
+        if (t === -1) {
+          return false;
+        }
+
+        if (wallCount += t < this._minWall) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Applies a single template at (x,y)
+   * @param x
+   * @param y
+   * @return {Number} the number of walls, or -1 if not created successfully
+   * @private
+   *
+   */
+  _applyTemplate(x, y) {
+    // Choose a random template
+    let temp = Templates[Math.floor(this._rand() * Templates.length)];
+    let i = 0;
+    let t = 0;
+
+    for (let dx = 0; dx < TEMPLATE_SIZE; ++dx) {
+      for (let dy = 0; dy < TEMPLATE_SIZE; ++dy, ++i) {
+        if (temp[i] === WALL) {
+          ++t;
+
+          if (this._playerFixedPos &&
+            x + dx === this._playerFixedPos.x &&
+            y + dy === this._playerFixedPos.y) {
+            return -1;
+          }
+        }
+
+        this.set(x + dx, y + dy, temp[i]);
+      }
+    }
+
+    return t;
   }
 
   /**
@@ -171,12 +226,12 @@ export default class Grid {
             continue;
           }
 
-          if (this._isPlayerFixed) {
+          if (this._playerFixedPos) {
             // The player position is fixed, so we need to know if current
             // position is accessible by the player (to move the player
             // position later)
-            if (!this._data.isAccessible(this._playerFixedX,
-                this._playerFixedY,
+            if (!this._data.isAccessible(this._playerFixedPos.x,
+                this._playerFixedPos.y,
                 x,
                 y)) {
               continue;
@@ -193,14 +248,14 @@ export default class Grid {
     this.applyStringGrid(maxMap);
 
     // Set player position
-    if (this._isPlayerFixed) {
-      this.set(this._playerFixedX, this._playerFixedY, PLAYER);
+    if (this._playerFixedPos) {
+      this.set(this._playerFixedPos.x, this._playerFixedPos.y, PLAYER);
     } else {
       this.set(maxPos.x, maxPos.y, PLAYER);
     }
   }
 
-  //region private functions
+//region private functions
 
   /**
    * Generates an empty matrix based on current width and height
@@ -248,6 +303,7 @@ export default class Grid {
    * @private
    */
   _pullBoxes(initBoxes, initPos, map) {
+    let size = 0;
     let stack = [{
       boxes : initBoxes.map(b => ({...b})),
       pos   : {...initPos},
@@ -256,6 +312,7 @@ export default class Grid {
     }];
 
     while (stack.length) {
+      size = Math.max(stack.length, size);
       let top = stack.shift();
       let {boxes, pos, matrix, step} = top;
 
@@ -415,9 +472,14 @@ export default class Grid {
     return data.map(a => a.slice());
   }
 
-  //endregion
+//endregion
 
   toString() {
     return this._data.toString();
   }
-};
+
+  toReadableString() {
+    return this._data.toReadableString();
+  }
+}
+;

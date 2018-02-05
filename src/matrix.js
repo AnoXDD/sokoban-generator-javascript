@@ -1,9 +1,16 @@
 import {
-  addMovableTile, BOX, BOX_GOAL, extractMovableTile, FLOOR, GOAL, isMovableTile,
+  addMovableTile,
+  BOX,
+  BOX_GOAL,
+  extractMovableTile,
+  FLOOR,
+  GOAL,
+  isMovableTile,
   isWalkableTile,
-  removeMovableTile, WALL
+  removeMovableTile,
+  WALL
 } from "./tiles";
-import {DOWN, LEFT, moveToDirection, RIGHT, UP} from "./direction";
+import {moveToDirection} from "./direction";
 import {emptyMatrix} from "./util";
 
 export default class Matrix {
@@ -351,11 +358,15 @@ export default class Matrix {
     this._propagateFloorWith(x, y + 1, tile);
   }
 
-  _emptyMatrix(initValue) {
+  _emptyMatrix(width, height, initValue) {
     return emptyMatrix(this._width, this._height, initValue);
   }
 
   toString() {
     return this._data.map(a => a.join("")).join("");
+  }
+
+  toReadableString() {
+    return this._data.map(a => a.join("")).join("\n");
   }
 }

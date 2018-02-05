@@ -304,7 +304,6 @@ describe("generateFarthestBoxes", () => {
     ]);
 
     grid.generateFarthestBoxes();
-    console.log(grid._data._data.map(a => a.join("")).join("\n"));
 
     expect(grid.get(1, 1)).toBe(BOX);
     expect(grid.get(2, 1)).toBe(BOX);
@@ -319,7 +318,6 @@ describe("generateFarthestBoxes", () => {
     ]);
 
     grid.generateFarthestBoxes();
-    console.log(grid._data._data.map(a => a.join("")).join("\n"));
 
     expect(grid.get(1, 1)).toBe(BOX);
     expect(grid.get(4, 1)).toBe(BOX);
@@ -336,7 +334,6 @@ describe("generateFarthestBoxes", () => {
     ]);
 
     grid.generateFarthestBoxes();
-    console.log(grid._data._data.map(a => a.join("")).join("\n"));
 
     expect(grid.get(3, 3)).toBe(BOX);
     expect(grid.get(4, 3)).toBe(BOX);
@@ -354,7 +351,6 @@ describe("generateFarthestBoxes", () => {
     ]);
 
     grid.generateFarthestBoxes();
-    console.log(grid._data._data.map(a => a.join("")).join("\n"));
 
     expect(grid.get(1, 1)).toBe(BOX);
     expect(grid.get(2, 1)).toBe(BOX);
@@ -362,79 +358,44 @@ describe("generateFarthestBoxes", () => {
     expect(grid.get(4, 1)).toBe(BOX);
   });
 
-  // test("Pressure test", () => {
-  //   for (let i = 0; i < 10; ++i) {
-  //     let grid = new Grid(6, 6, 4);
-  //     grid.setMatrixAsArray([
-  //       `      `.split(""),
-  //       `      `.split(""),
-  //       `  **  `.split(""),
-  //       `  **  `.split(""),
-  //       `      `.split(""),
-  //       `      `.split(""),
-  //     ]);
-  //
-  //     grid.generateFarthestBoxes();
-  //     console.log(grid._data._data.map(a => a.join("")).join("\n"));
-  //
-  //     expect(grid.get(1, 1)).toBe(BOX);
-  //     expect(grid.get(2, 1)).toBe(BOX);
-  //     expect(grid.get(1, 2)).toBe(BOX);
-  //     expect(grid.get(4, 1)).toBe(BOX);
-  //   }
-  // });
+  test(`6x8`, () => {
+    let grid = new Grid(6, 8, 3);
+    grid.setMatrixAsArray([
+      `     #`.split(""),
+      `      `.split(""),
+      `  ##  `.split(""),
+      `  # **`.split(""),
+      `###   `.split(""),
+      `   #  `.split(""),
+      ` *    `.split(""),
+      `      `.split(""),
+    ]);
 
-  // test(`10x10`, () => {
-  //   let grid = new Grid(10, 10, 4);
-  //   grid.setMatrixAsArray([
-  //     `          `.split(""),
-  //     `#        #`.split(""),
-  //     `#        #`.split(""),
-  //     `#        #`.split(""),
-  //     `#        #`.split(""),
-  //     `###### ###`.split(""),
-  //     `#        #`.split(""),
-  //     `#   **   #`.split(""),
-  //     `#        #`.split(""),
-  //     `    **    `.split("")
-  //   ]);
-  //
-  //
-  //   setTimeout(() => {
-  //     expect(1).toThrowError("Time out");
-  //   }, 5000);
-  //
-  //   grid.generateFarthestBoxes();
-  //   console.log(grid._data._data.map(a => a.join("")).join("\n"));
-  //
-  //   // expect(grid.get(2, 2)).toBe(BOX);
-  //   // expect(grid.get(2, 7)).toBe(BOX);
-  //   // expect(grid.get(7, 2)).toBe(BOX);
-  //   // expect(grid.get(7, 7)).toBe(BOX);
-  // });
+    grid.generateFarthestBoxes();
 
-  // test(`10x10 with walls`, () => {
-  //   let grid = new Grid(10, 10, 4);
-  //   grid.setMatrixAsArray([
-  //     `##########`.split(""),
-  //     `#        #`.split(""),
-  //     `#   ##   #`.split(""),
-  //     `#        #`.split(""),
-  //     `#   **   #`.split(""),
-  //     `#   **   #`.split(""),
-  //     `#        #`.split(""),
-  //     `#   ##   #`.split(""),
-  //     `#        #`.split(""),
-  //     `##########`.split("")
-  //   ]);
-  //
-  //   grid.generateFarthestBoxes();
-  //
-  //   expect(grid.get(2, 2)).toBe(BOX);
-  //   expect(grid.get(2, 7)).toBe(BOX);
-  //   expect(grid.get(7, 2)).toBe(BOX);
-  //   expect(grid.get(7, 7)).toBe(BOX);
-  // });
+    expect(grid.get(1, 1)).toBe(BOX);
+    expect(grid.get(1, 2)).toBe(BOX);
+    expect(grid.get(4, 1)).toBe(BOX);
+  });
 
+  test(`9x9`, () => {
+    let grid = new Grid(9, 9, 3);
+    grid.setMatrixAsArray([
+      `         `.split(""),
+      `         `.split(""),
+      `         `.split(""),
+      `  #####  `.split(""),
+      `         `.split(""),
+      `  #####  `.split(""),
+      `         `.split(""),
+      `         `.split(""),
+      `   ***   `.split(""),
+    ]);
 
+    grid.generateFarthestBoxes();
+
+    expect(grid.get(3, 1)).toBe(BOX);
+    expect(grid.get(4, 1)).toBe(BOX);
+    expect(grid.get(5, 1)).toBe(BOX);
+  });
 });
