@@ -213,6 +213,7 @@ export default class Grid {
             // The player position is fixed, so we need to know if current
             // position is accessible by the player (to move the player
             // position later)
+            this.applyStringGrid(key);
             if (!this._data.isAccessible(this._playerFixedPos.x,
                 this._playerFixedPos.y,
                 x,
