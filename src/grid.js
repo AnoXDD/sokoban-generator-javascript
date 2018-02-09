@@ -1,4 +1,4 @@
-import {FLOOR, GOAL, PLAYER, WALL} from "./tiles";
+import {FLOOR, GOAL, PLAYER, PLAYER_GOAL, WALL} from "./tiles";
 import seedrandom from "seedrandom";
 import {DIRECTIONS, moveToDirection, oppositeDirection} from "./direction";
 import Matrix from "./matrix";
@@ -236,11 +236,11 @@ export default class Grid {
     this.applyStringGrid(maxMap);
 
     // Set player position
-    if (this._playerFixedPos) {
-      this.set(this._playerFixedPos.x, this._playerFixedPos.y, PLAYER);
-    } else {
-      this.set(maxPos.x, maxPos.y, PLAYER);
-    }
+    let x = this._playerFixedPos ? this._playerFixedPos.x : maxPos.x;
+    let y = this._playerFixedPos ? this._playerFixedPos.y : maxPos.y;
+    let tile = this.get(x, y) === GOAL ? PLAYER_GOAL : GOAL;
+
+    this.set(x, y, tile);
 
     return true;
   }
