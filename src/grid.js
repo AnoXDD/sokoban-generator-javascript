@@ -238,7 +238,7 @@ export default class Grid {
     // Set player position
     let x = this._playerFixedPos ? this._playerFixedPos.x : maxPos.x;
     let y = this._playerFixedPos ? this._playerFixedPos.y : maxPos.y;
-    let tile = this.get(x, y) === GOAL ? PLAYER_GOAL : GOAL;
+    let tile = this.get(x, y) === GOAL ? PLAYER_GOAL : PLAYER;
 
     this.set(x, y, tile);
 
