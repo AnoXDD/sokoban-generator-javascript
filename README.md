@@ -10,6 +10,12 @@ A procedural level generator for [Sokoban](https://en.wikipedia.org/wiki/Sokoban
 npm i sokoban-generator
 ```
 
+## Demo
+
+[Play Sokoban created by this generator in action!](https://gamelets.anoxic.me/#sokoban-infinite)
+
+The website above uses the default options for the generator, except that it specifies the initial position of the player. 
+
 ## Usage
 
 ```JavaScript 1.6
@@ -56,7 +62,7 @@ will probably generate different levels.
 
 The time it takes to generate a level is greatly increased when the number of size and walls are increased. 
 
-It took ~5 seconds to generate a result on default settings on a 2015 Ultrabook Laptop using node, but it took only less than a second on [runkit](https://npm.runkit.com/sokoban-generator).
+It took ~1 seconds to generate a result on default settings on a 2015 Ultrabook Laptop on Node, but it took only less than a second on [runkit](https://npm.runkit.com/sokoban-generator).
 
 ## License
 
