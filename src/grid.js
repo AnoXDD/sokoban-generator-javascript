@@ -64,7 +64,8 @@ export default class Grid {
   }
 
   /**
-   * If the grid has a solvable level, this will return the step needed to solve it
+   * If the grid has a solvable level, this will return the step needed to
+   * solve it. Only call this after a puzzle has been successfully generated
    * @return {number|*}
    */
   getSolutionStep() {
