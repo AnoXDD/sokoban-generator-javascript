@@ -20,6 +20,7 @@ export default class Grid {
     this._seed = seed;
     this._minWall = minWall;
     this._playerFixedPos = playerPos;
+    this._solutionStep = -1;
   }
 
   get(x, y) {
@@ -57,8 +58,17 @@ export default class Grid {
       this._minWall,
       this._playerFixedPos);
     newGrid._data = this._data.clone();
+    newGrid._solutionStep = this._solutionStep;
 
     return newGrid;
+  }
+
+  /**
+   * If the grid has a solvable level, this will return the step needed to solve it
+   * @return {number|*}
+   */
+  getSolutionStep() {
+    return this._solutionStep;
   }
 
   /**
@@ -233,6 +243,7 @@ export default class Grid {
       return false;
     }
 
+    this._solutionStep = max;
     this.applyStringGrid(maxMap);
 
     // Set player position
